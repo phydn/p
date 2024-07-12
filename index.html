@@ -6,11 +6,16 @@ p.a {
   white-space: pre;
   color: black;
 }
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 </style>
 
-<body style="background-color:lightblue;">
+<body class="prevent-select" style="background-color:lightblue;">
 
-<canvas id="myCanvas" onload = 'move()' onclick = "clickfunc()" width="1600" height="800" style=" padding-left: 0;
+<canvas id="myCanvas" class="prevent-select" onload = 'move()' onclick = "clickfunc()" width="1600" height="800" style=" padding-left: 0;
 	
     margin-left: auto;
     margin-right: auto;
@@ -929,7 +934,7 @@ if (fade == 1){fadeTimer += 0.5;if (fadeTimer > changeFrame){scene = sendScene;}
 
 //Printout
 if (guion==1){
-	demo1ext=" |cxM: " + cxM + " |cyM: " + cyM + " |px: " + px + " |py: " + py + " |sdir: " + sdir + " |pressdown: " + pressdown;
+	demo1ext=" |cxM: " + cxM + " |cyM: " + cyM + " |px: " + px + " |py: " + py + " |sdir: " + sdir + " |mkey: " + mkey;
 	//demo2ext="";
 	document.getElementById("demo1").innerHTML = "XR: " + String(canvasX+cxM) + " |YR: " + String(canvasY+cyM) + " |X: " + canvasX + "| Y: " + canvasY; document.getElementById("demo1").innerHTML += demo1ext;
 	document.getElementById("demo2").innerHTML = ""; document.getElementById("demo2").innerHTML += demo2ext;
@@ -984,11 +989,9 @@ window.onkeydown = function(e) {
     }
 };
 
-var pressdown=0; var mdx=0; var mdy=0;
+var mdx=0; var mdy=0; var mkey="";
 window.addEventListener('touchstart', function(e) {
 	var cRect = canvas.getBoundingClientRect(); 
-	pressdown=1;
-	//console.log(canvasX+", " + canvasY);
 	mdx = e.touches[0].clientX;
     mdy = e.touches[0].clientY;
 	
@@ -997,32 +1000,23 @@ window.addEventListener('touchstart', function(e) {
 	canvasX=Math.round(canvasX/(canvas.width/800));
 	canvasY=Math.round(canvasY/(canvas.height/400));
 	
-	console.log(canvasX+", " + canvasY);
-	
-	//console.log(mdx+", " + mdy);
 	if (canvasX>4&&canvasX<73&&canvasY>339&&canvasY<398){
-		moveL=1;  moveR=0; pdir=-1; 
+		moveL=1;  pdir=-1;  mkey="L";
 	}
 	if (canvasX>80&&canvasX<153&&canvasY>339&&canvasY<398){
-		moveR=1;  moveL=0; pdir=1;
-	}
-	if (canvasX>720&&canvasX<796&&canvasY>339&&canvasY<398){
-		if (moveU==0){moveU=1;atimer=0;}
+		moveR=1;  pdir=1;  mkey="R";
 	}
 });
 
-window.addEventListener('touchend', function() {
-	pressdown=0;
-	moveL=0; moveR=0; 
+window.addEventListener('touchend', function(e) {
+	if (mkey=="R"){moveR=0;}
+	if (mkey=="L"){moveL=0;}
 });
 var nodown = 0;
 function clickfunc(){
-
-if (pressdown==1){
-	//if (canvasX>4&&canvasX<73&&canvasY>339&&canvasY<398){moveL=1; moveR=0; pdir=-1;}
-	//if (canvasX>80&&canvasX<153&&canvasY>339&&canvasY<398){moveR=1; moveL=0; pdir=1;}
-	//if (canvasX>724&&canvasX<795&&canvasY>339&&canvasY<398){if (moveU==0){moveU=1; atimer=0;}}
-}
+	if (canvasX>4&&canvasX<73&&canvasY>339&&canvasY<398){}
+	else if (canvasX>80&&canvasX<153&&canvasY>339&&canvasY<398){}
+	else{if (moveU==0){moveU=1; atimer=0;}}
 nodown = 0;
 }
 
